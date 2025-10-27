@@ -25,7 +25,7 @@ const createReverb = async function() {
     let ir = await audioContext.decodeAudioData(arraybuffer)
 
     //create and return AudioNode for reverb effect.
-    return new ConvolverNode(audioContext, {buffer: ir};
+    return new ConvolverNode(audioContext, {buffer: ir});
 }
 
 // Usage
