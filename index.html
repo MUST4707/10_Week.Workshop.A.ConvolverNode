@@ -28,6 +28,12 @@
     <h1>Web Audio: Reverb with <code>ConvolverNode</code></h1>
     <button id="start">Mic On</button>
     <button id="stop">Mic Off</button>
+    <div>
+        <h3>Dry/Wet Mix</h3>
+        <input id="mix" type="range" min="0" max="100" value="50">
+        <label id="wdLabel" for="mix">50%</label>
+    </div>
+
     <p>
         The <code>ConvolverNode</code> in the Web Audio API applies a linear convolution effect to audio. This is often used to simulate reverberation based on an <strong>impulse response</strong> (IR), which captures the acoustic signature of a physical space.
     </p>
@@ -44,14 +50,13 @@
 
     <h2>Reverb with a Convolver Node</h2>
     <pre><code>const createReverb = async function() {
-    let convolver = audioContext.createConvolver();
+        // Load impulse response
+        let response = await fetch("ir/TPAC-chapel.wav");
+        let arraybuffer = await response.arrayBuffer();
+        let ir = await audioContext.decodeAudioData(arraybuffer)
 
-    // Load impulse response
-    let response = await fetch("ir/TPAC-chapel.wav");
-    let arraybuffer = await response.arrayBuffer();
-    convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
-
-    return convolver;
+        //create and return AudioNode for reverb effect.
+        return new ConvolverNode(audioContext, {buffer: ir};
 }
 
 // Usage
