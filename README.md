@@ -17,21 +17,20 @@ To use a `ConvolverNode`, you need to load an audio file that contains the impul
 
 Reverb with a Convolver Node
 ----------------------------
+```js
+const createReverb = async function() {
+    // Load impulse response
+    let response = await fetch("ir/TPAC-chapel.wav");
+    let arraybuffer = await response.arrayBuffer();
+    let ir = await audioContext.decodeAudioData(arraybuffer)
 
-    const createReverb = async function() {
-        let convolver = audioContext.createConvolver();
-    
-        // Load impulse response
-        let response = await fetch("ir/TPAC-chapel.wav");
-        let arraybuffer = await response.arrayBuffer();
-        convolver.buffer = await audioContext.decodeAudioData(arraybuffer);
-    
-        return convolver;
-    }
-    
-    // Usage
-    reverb = await createReverb();
-    reverb.connect(outputGain);
+    //create and return AudioNode for reverb effect.
+    return new ConvolverNode(audioContext, {buffer: ir};
+}
 
+// Usage
+reverb = await createReverb();
+reverb.connect(outputGain);
+```
 
 This example loads an impulse response from `TPAC-chapel.wav` and sets it as the buffer for a `ConvolverNode`. Once created, the reverb is connected to the audio graph through `outputGain`.
